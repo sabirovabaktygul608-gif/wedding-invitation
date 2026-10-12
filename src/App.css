@@ -1,0 +1,932 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500&display=swap');
+
+:root {
+  font-family: 'Montserrat', sans-serif;
+  color: #59202d;
+  background: #f8f3e9;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wedding {
+  min-height: 100vh;
+  overflow: hidden;
+  background: #f8f3e9;
+  color: #59202d;
+}
+
+/* ПЕРЕКЛЮЧЕНИЕ ЯЗЫКА */
+
+.language-switch {
+  position: absolute;
+  z-index: 20;
+  top: 22px;
+  right: 22px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #e4c58a;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.language-switch button {
+  padding: 5px;
+  border: 0;
+  color: #e4c58a;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.65;
+}
+
+.language-switch button.active {
+  opacity: 1;
+  border-bottom: 1px solid #e4c58a;
+}
+
+/* КОНВЕРТ */
+
+.envelope-screen {
+  min-height: 100vh;
+  padding: 45px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: radial-gradient(
+    ellipse at center,
+    #712b3a,
+    #481522 55%,
+    #260811
+  );
+  animation: screen-appear 1s ease both;
+}
+
+.envelope-caption {
+  margin: 0 0 55px;
+  font-size: 10px;
+  letter-spacing: 4px;
+  line-height: 2;
+  color: #e4c58a;
+}
+
+.envelope {
+  position: relative;
+  width: min(82vw, 390px);
+  aspect-ratio: 1.35;
+  cursor: pointer;
+  perspective: 1000px;
+  filter: drop-shadow(0 24px 30px #18050b80);
+}
+
+.envelope-back {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #6a2636;
+  border: 1px solid #d5b474;
+}
+
+.invitation-card {
+  position: absolute;
+  z-index: 2;
+  left: 8%;
+  right: 8%;
+  bottom: 5%;
+  height: 88%;
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  color: #59202d;
+  background: #f8f0e2;
+  border: 1px solid #d8bf8d;
+  transition: transform 1.8s cubic-bezier(.22, 1, .36, 1);
+}
+
+.card-top,
+.card-date {
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+
+.card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-style: italic;
+}
+
+.card-ornament {
+  color: #b79551;
+}
+
+.card-names {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(25px, 6vw, 38px);
+}
+
+.card-names i {
+  color: #b79551;
+}
+
+.envelope-pocket {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(145deg, #762f40, #531725);
+  clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
+}
+
+.envelope-flap {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  transform-origin: top center;
+  transition: transform 1.6s cubic-bezier(.4, 0, .2, 1);
+  transform-style: preserve-3d;
+}
+
+.flap-inner {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #8c3b4c, #652335);
+  clip-path: polygon(0 0, 100% 0, 50% 65%);
+  border-top: 1px solid #e0c58d;
+  backface-visibility: hidden;
+}
+
+.wax-seal {
+  position: absolute;
+  z-index: 6;
+  top: 48%;
+  left: 50%;
+  width: 57px;
+  height: 57px;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  border: 2px solid #e4c88c;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e3ca8e, #a57a39 75%);
+  box-shadow: 0 3px 8px #23060d60;
+  color: #612033;
+  font-size: 32px;
+  transition: opacity .5s ease, transform .5s ease;
+}
+
+.envelope-open .envelope-flap {
+  transform: rotateX(180deg);
+}
+
+.envelope-open .wax-seal {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.4);
+}
+
+.envelope-open .invitation-card {
+  transform: translateY(-75%);
+  transition-delay: .8s;
+}
+
+/* КНОПКИ */
+
+.envelope-open-button,
+.back-button,
+.map-button {
+  display: inline-block;
+  padding: 15px 23px;
+  border: 1px solid #b79551;
+  background: transparent;
+  color: #59202d;
+  text-align: center;
+  text-decoration: none;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: background .3s, color .3s;
+}
+
+.envelope-open-button {
+  margin-top: 65px;
+  color: #f7e8ca;
+  border-color: #c8a566;
+}
+
+.envelope-open-button:hover:not(:disabled) {
+  background: #d5b474;
+  color: #40111d;
+}
+
+.envelope-open-button:disabled {
+  opacity: .7;
+  cursor: default;
+}
+
+.envelope-open-button span {
+  color: #d8b879;
+}
+
+.envelope-hint {
+  margin-top: 22px;
+  color: #e0c8a4;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+}
+
+/* ГЛАВНОЕ ПРИГЛАШЕНИЕ */
+
+.hero {
+  min-height: 100vh;
+  padding: 90px 24px 65px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: radial-gradient(ellipse at top, #fffdf7, #f5ecdd 75%);
+}
+
+/* УВЕЛИЧЕННАЯ ДАТА СВАДЬБЫ */
+
+.hero-label {
+  margin: 0 auto 20px;
+  color: #8c704b;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(25px, 4.5vw, 36px);
+  font-weight: 600;
+  letter-spacing: 2px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* ДЕКОРАТИВНЫЙ ОРНАМЕНТ */
+
+.hero-ornament {
+  margin-top: 12px;
+  color: #b79551;
+  font-size: 42px;
+}
+
+/* ИМЕНА НАД ФОТОГРАФИЕЙ */
+
+.hero h1.hero-names {
+  width: 100%;
+  margin: 12px auto 20px;
+  padding: 0 4px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 8vw, 76px);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: 1px;
+  color: #b08a4a;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.hero h1.hero-names i {
+  color: #702235;
+  font-weight: 400;
+}
+
+/* ЗОЛОТОЙ РАЗДЕЛИТЕЛЬ */
+
+.gold-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  width: 110px;
+  margin: 0 auto 25px;
+  color: #b79551;
+}
+
+.gold-divider::before,
+.gold-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #c7a56b;
+}
+
+/* ФОТОГРАФИЯ */
+
+.hero-photo-frame {
+  width: min(78vw, 350px);
+  height: min(105vw, 440px);
+  margin: 0 auto 28px;
+  padding: 8px;
+  border: 1px solid #c7a56b;
+  background: #fffdf8;
+  box-shadow: 0 15px 40px #491f271f;
+  overflow: hidden;
+  animation: photo-appear 1.2s ease both;
+}
+
+.hero-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ТЕКСТ ПРИГЛАШЕНИЯ */
+
+.hero-message {
+  max-width: 590px;
+  margin: 15px 0 30px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 21px;
+  line-height: 1.8;
+}
+
+.host-block {
+  margin: 15px 0 30px;
+}
+
+.host-block p {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #8c704b;
+}
+
+.host-block h2,
+.details-section h2,
+.venue-section h2,
+.dress-section h2,
+.rsvp-section h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(30px, 6vw, 43px);
+  font-weight: 400;
+}
+
+.back-button:hover {
+  background: #59202d;
+  color: #f8ead7;
+}
+
+/* КАЛЕНДАРЬ */
+
+.calendar-section {
+  padding: 75px 20px;
+  text-align: center;
+  background: #fbf7f0;
+  color: #642b38;
+}
+
+.section-kicker {
+  font-size: 9px;
+  letter-spacing: 3px;
+  line-height: 2;
+  color: #9d7b47;
+}
+
+.calendar-section h2 {
+  margin: 12px 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 400;
+}
+
+.calendar-subtitle {
+  margin-bottom: 28px;
+  color: #8b6a52;
+  font-size: 14px;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+  max-width: 350px;
+  margin: 0 auto;
+}
+
+.calendar-weekday {
+  padding: 8px 0;
+  color: #9b7955;
+  font-size: 12px;
+}
+
+.calendar-empty {
+  min-height: 38px;
+}
+
+.calendar-day {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  border: 1px solid #eadfce;
+  border-radius: 50%;
+  font-size: 13px;
+}
+
+.calendar-day.wedding-day {
+  background: #702d3d;
+  color: #fff8ee;
+  border-color: #c8a568;
+  box-shadow: 0 0 0 3px #ead9b8;
+}
+
+.calendar-day span {
+  position: absolute;
+  bottom: -8px;
+  font-size: 10px;
+  color: #c49b58;
+}
+
+.calendar-note {
+  margin-top: 28px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: #8b6a52;
+}
+
+/* ОБРАТНЫЙ ОТСЧЁТ */
+
+.countdown-section {
+  padding: 65px 20px;
+  text-align: center;
+  background: #481522;
+  color: #f8ead7;
+}
+
+.countdown-section .section-kicker {
+  color: #e0c58d;
+}
+
+.countdown-section h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 34px;
+  font-weight: 400;
+}
+
+.countdown-grid {
+  width: min(100%, 500px);
+  margin: 25px auto 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.countdown-grid div {
+  padding: 18px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid #c7a365;
+  border-bottom: 1px solid #c7a365;
+}
+
+.countdown-grid strong {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 6vw, 43px);
+  font-weight: 400;
+}
+
+.countdown-grid span {
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: #e0c8a4;
+}
+
+/* ПРОГРАММА ВЕЧЕРА */
+
+.details-section,
+.venue-section,
+.dress-section,
+.rsvp-section {
+  padding: 80px 24px;
+  text-align: center;
+  background: #fffdf8;
+}
+
+.details-section h2 {
+  margin: 15px 0 35px;
+}
+
+.timeline {
+  width: min(100%, 520px);
+  margin: auto;
+  text-align: left;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 95px 1fr;
+  align-items: center;
+  gap: 20px;
+  padding: 22px 8px;
+  border-bottom: 1px solid #e5d8bf;
+}
+
+.timeline-item strong {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: #9b7440;
+}
+
+.timeline-item span {
+  align-self: center;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* МЕСТО ТОРЖЕСТВА */
+
+.venue-section {
+  background: #f4ebdc;
+}
+
+.venue-art {
+  width: min(100%, 500px);
+  min-height: 180px;
+  margin: 25px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 35px;
+  border: 1px solid #d8c49d;
+  background: linear-gradient(180deg, #e7dfcd, #f8f1e4);
+  color: #6b7958;
+  font-size: 65px;
+}
+
+.venue-art span:nth-child(2) {
+  color: #8b5a44;
+  font-size: 75px;
+}
+
+.venue-section > p:not(.section-kicker) {
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.map-button {
+  margin-top: 18px;
+  background: #59202d;
+  color: #f8ead7;
+}
+
+.map-button:hover {
+  background: #7a3546;
+}
+
+/* ДРЕСС-КОД */
+
+.dress-section {
+  background: #f8f3e9;
+}
+
+.dress-section > p:not(.section-kicker) {
+  max-width: 500px;
+  margin: 20px auto;
+  font-size: 13px;
+  line-height: 2;
+  color: #775c54;
+}
+
+.color-palette {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin-top: 35px;
+}
+
+.color-palette > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.color-swatch {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  border: 1px solid #d8c49d;
+}
+
+.burgundy {
+  background: #702235;
+}
+
+.rose-gold {
+  background: #b77d76;
+}
+
+.chocolate {
+  background: #57392f;
+}
+
+.color-palette small {
+  font-size: 10px;
+  color: #775c54;
+}
+
+/* ПОДТВЕРЖДЕНИЕ ПРИСУТСТВИЯ */
+
+.rsvp-section > p:not(.section-kicker) {
+  max-width: 450px;
+  margin: 20px auto;
+  font-size: 13px;
+  line-height: 2;
+  color: #775c54;
+}
+
+.rsvp-form {
+  width: min(100%, 430px);
+  margin: 35px auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: left;
+}
+
+.rsvp-form > label:first-child,
+.rsvp-question {
+  margin: 15px 0 10px;
+  font-size: 12px;
+}
+
+.rsvp-form > input {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #d8c49d;
+  outline-color: #b79551;
+  background: #fff;
+  color: #59202d;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0;
+  padding: 13px;
+  border: 1px solid #e5d8bf;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.radio-option input {
+  accent-color: #702235;
+}
+
+.rsvp-form .map-button {
+  width: 100%;
+  margin-top: 25px;
+}
+
+.success-message {
+  margin: 35px auto;
+  color: #59202d;
+}
+
+.success-message > span {
+  font-size: 45px;
+  color: #b79551;
+}
+
+.success-message h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-weight: 400;
+}
+
+/* ПОДВАЛ САЙТА */
+
+.site-footer {
+  padding: 45px 20px;
+  text-align: center;
+  background: #481522;
+  color: #e9d3ac;
+}
+
+.site-footer > div {
+  font-size: 35px;
+}
+
+.site-footer h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 400;
+}
+
+.site-footer p {
+  font-size: 9px;
+  letter-spacing: 3px;
+}
+
+.site-footer .back-button {
+  margin-top: 20px;
+  color: #e9d3ac;
+  border-color: #c7a365;
+}
+
+/* КНОПКА МУЗЫКИ */
+
+.music-button {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 100;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #d8b879;
+  border-radius: 50%;
+  background: #59202d;
+  color: #f8ead7;
+  font-size: 25px;
+  cursor: pointer;
+  box-shadow: 0 5px 20px #3b101b30;
+  transition: transform .3s, background .3s;
+}
+
+.music-button:hover {
+  transform: scale(1.08);
+  background: #7a3546;
+}
+
+.music-button.playing {
+  animation: music-pulse 2s ease-in-out infinite;
+}
+
+/* АНИМАЦИИ */
+
+@keyframes screen-appear {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes photo-appear {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes music-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 #c7a56855;
+  }
+
+  50% {
+    box-shadow: 0 0 0 8px #c7a56800;
+  }
+}
+
+/* АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ */
+
+@media (max-width: 480px) {
+  .language-switch {
+    top: 14px;
+    right: 15px;
+  }
+
+  .envelope-screen {
+    padding: 35px 20px;
+  }
+
+  .envelope-caption {
+    margin-bottom: 45px;
+    font-size: 9px;
+    letter-spacing: 2px;
+  }
+
+  .envelope-open-button {
+    margin-top: 55px;
+  }
+
+  .hero {
+    padding: 70px 16px 50px;
+  }
+
+  .hero-label {
+    margin-bottom: 18px;
+    font-size: 25px;
+    letter-spacing: 1px;
+  }
+
+  .hero h1.hero-names {
+    font-size: clamp(36px, 9.5vw, 48px);
+    letter-spacing: 0;
+    margin: 10px auto 18px;
+  }
+
+  .hero-photo-frame {
+    width: min(82vw, 310px);
+    height: min(110vw, 390px);
+    margin-bottom: 22px;
+  }
+
+  .hero-message {
+    font-size: 19px;
+  }
+
+  .countdown-grid {
+    gap: 6px;
+  }
+
+  .countdown-grid div {
+    padding: 14px 2px;
+  }
+
+  .details-section,
+  .venue-section,
+  .dress-section,
+  .rsvp-section {
+    padding: 60px 20px;
+  }
+
+  .timeline-item {
+    grid-template-columns: 75px 1fr;
+    gap: 12px;
+  }
+
+  .venue-art {
+    min-height: 140px;
+    gap: 15px;
+    font-size: 45px;
+  }
+
+  .venue-art span:nth-child(2) {
+    font-size: 55px;
+  }
+
+  .calendar {
+    gap: 5px;
+  }
+
+  .calendar-day {
+    min-height: 35px;
+  }
+
+  .music-button {
+    right: 14px;
+    bottom: 14px;
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* УЧЁТ НАСТРОЙКИ УМЕНЬШЕНИЯ АНИМАЦИИ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
